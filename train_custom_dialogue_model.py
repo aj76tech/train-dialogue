@@ -1,88 +1,71 @@
-# train_custom_dialogue_model.py
-
-import json
+import os
 import numpy as np
-import gradio as gr
-from datasets import load_dataset
+import tempfile
 from transformers import GPT2Tokenizer, GPT2LMHeadModel, TrainingArguments, Trainer
+from datasets import load_dataset
 
-# Step 1: Define a Gradio Interface to Upload Dataset
-def upload_dataset(file):
-    with open(file.name, 'r') as f:
-        dataset = json.load(f)
-    return dataset
-
-iface = gr.Interface(
-    fn=upload_dataset,
-    outputs="json",
-    live=True,
-    share=True
-)
-
-# Display the Gradio Interface to upload the dataset
-iface.launch(share=True)
-# Wait for the user to upload the dataset and continue to the next cell
-
-# Step 2: Load and Preprocess the Uploaded Dataset
-# The uploaded dataset will be available in the variable iface.outputs
-dataset = iface.outputs
+# Step 1: Load and Preprocess Your Custom Dataset
+dataset = load_dataset('json', data_files='dataset.json')
 
 # Preprocess the dataset
 def preprocess_data(example):
     # Your custom preprocessing logic here
     return example
 
-dataset = [preprocess_data(example) for example in dataset]
+# Apply the function to all examples in the dataset
+dataset = dataset.map(preprocess_data)
 
-# Step 3: Initialize Tokenizer and Model
+# Step 2: Initialize Tokenizer and Model
 tokenizer = GPT2Tokenizer.from_pretrained('microsoft/DialoGPT-medium')
 tokenizer.pad_token = tokenizer.eos_token
 model = GPT2LMHeadModel.from_pretrained('microsoft/DialoGPT-medium')
 
-# Step 4: Encode Your Dataset
-def encode_data(example):
-    encoded = tokenizer(example['dialog'], truncation=True, padding='max_length', max_length=128)
+# Step 3: Encode Your Dataset
+def encode_data(examples):
+    encoded = tokenizer(examples['dialog'], truncation=True, padding='max_length', max_length=128)
     encoded['labels'] = encoded['input_ids'][:]
     return encoded
 
-encoded_dataset = [encode_data(example) for example in dataset]
+encoded_dataset = dataset.map(encode_data, batched=True)
 
-# Step 5: Set Up Training
-output_dir = "your_output_directory"  # Specify the output directory
+# Step 4: Set Up Training
+output_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "saved_model")
+os.makedirs(output_dir, exist_ok=True)
+
 training_args = TrainingArguments(
-    output_dir=output_dir,
+    output_dir=output_dir,            # specify the output directory
     num_train_epochs=10,
-    per_device_train_batch_size=4,  # Adjust as needed
-    per_device_eval_batch_size=4,   # Adjust as needed
+    per_device_train_batch_size=16,
+    per_device_eval_batch_size=64,
     warmup_steps=500,
     weight_decay=0.01,
-    logging_dir=None,
+    logging_dir=None
 )
 
 trainer = Trainer(
     model=model,
     args=training_args,
-    train_dataset=encoded_dataset,
-    eval_dataset=encoded_dataset[:10]  # Select the first 10 examples for evaluation
+    train_dataset=encoded_dataset['train'],
+    eval_dataset=encoded_dataset['validation']
 )
 
-# Step 6: Fine-Tune the Model
+# Step 5: Fine-Tune the Model
 trainer.train()
 
-# Step 7: Save the Trained Model
+# Step 6: Save the Trained Model
 model.save_pretrained(output_dir)
 tokenizer.save_pretrained(output_dir)
 
-# Step 8: Evaluate and Generate Predictions
-post_eval_results = trainer.evaluate(encoded_dataset[:10])  # Select the first 10 examples for evaluation
-post_val_predictions = trainer.predict(encoded_dataset[:10])  # Select the first 10 examples
+# Step 7: Evaluate and Generate Predictions
+post_eval_results = trainer.evaluate(encoded_dataset['validation'])
+post_val_predictions = trainer.predict(encoded_dataset['validation'].select(range(10)))
 
 print('Evaluation Results after fine-tuning:', post_eval_results['eval_loss'])
 
-# Step 9: Explore Predictions
-for idx, (example, post) in enumerate(zip(dataset[:10], post_val_predictions.predictions)):
+# Step 8: Explore Predictions
+for idx, (_, post) in enumerate(zip(encoded_dataset['validation'][:10], post_val_predictions.predictions)):
     post_pred = tokenizer.decode(np.argmax(post, axis=-1), skip_special_tokens=True)
-    ground_truth = example["dialog"]
+    ground_truth = encoded_dataset['validation'][idx]["dialog"]
     
     print('Ground truth \n' + ground_truth + '\n')
     print('Post-prediction \n' + post_pred + '\n')
