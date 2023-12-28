@@ -5,7 +5,8 @@ from transformers import GPT2Tokenizer, GPT2LMHeadModel, TrainingArguments, Trai
 from datasets import load_dataset
 
 # Step 1: Load and Preprocess Your Custom Dataset
-dataset = load_dataset('json', data_files='dataset.json')
+dataset_url = "https://raw.githubusercontent.com/aj76tech/train-dialogue/main/dataset.json"
+dataset = load_dataset('json', data_files=dataset_url)
 
 # Preprocess the dataset
 def preprocess_data(example):
