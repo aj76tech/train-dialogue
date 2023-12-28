@@ -22,7 +22,8 @@ iface = gr.Interface(
 
 # Display the Gradio Interface to upload the dataset
 iface.launch()
-
+share_url = iface.share()
+print("Shareable link:", share_url)
 # Wait for the user to upload the dataset and continue to the next cell
 
 # Step 2: Load and Preprocess the Uploaded Dataset
