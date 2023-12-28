@@ -14,7 +14,6 @@ def upload_dataset(file):
 
 iface = gr.Interface(
     fn=upload_dataset,
-    inputs=gr.File(label="Upload dataset.json"),
     outputs="json",
     live=True,
     share=True
