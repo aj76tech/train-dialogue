@@ -1,7 +1,5 @@
 # train_custom_dialogue_model.py
 
-!pip install transformers datasets gradio
-
 import json
 import numpy as np
 import gradio as gr
