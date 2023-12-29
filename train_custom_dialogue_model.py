@@ -23,10 +23,17 @@ model = GPT2LMHeadModel.from_pretrained('microsoft/DialoGPT-medium')
 
 # Step 3: Encode Your Dataset
 def encode_data(examples):
-    encoded = tokenizer(examples['dialog'], truncation=True, padding='max_length', max_length=128)
-    encoded['labels'] = encoded['input_ids'][:]
-    return encoded
+    # Handle single sequences or pairs of sequences
+    if "dialog" in examples:
+        # Single sequence
+        return tokenizer(examples["dialog"], truncation=True, padding="max_length", max_length=128)
+    elif "dialogue_1" in examples and "dialogue_2" in examples:
+        # Pairs of sequences
+        return tokenizer(examples["dialogue_1"], examples["dialogue_2"], truncation=True, padding="max_length", max_length=128)
+    else:
+        raise ValueError("Invalid input format. Please provide 'dialog' or ('dialogue_1', 'dialogue_2') in examples.")
 
+# Apply the function to all examples in the dataset
 encoded_dataset = dataset.map(encode_data, batched=True)
 
 # Step 4: Set Up Training
