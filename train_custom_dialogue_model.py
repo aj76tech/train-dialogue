@@ -1,6 +1,5 @@
 import os
 import numpy as np
-import tempfile
 from transformers import GPT2Tokenizer, GPT2LMHeadModel, TrainingArguments, Trainer
 from datasets import load_dataset
 
@@ -26,10 +25,10 @@ def encode_data(examples):
     # Handle single sequences or pairs of sequences
     if "dialog" in examples:
         # Single sequence
-        return tokenizer(examples["dialog"], truncation=True, padding="max_length", max_length=128)
+        return tokenizer(examples["dialog"], truncation=True, padding="max_length", max_length=128, return_tensors="pt")
     elif "dialogue_1" in examples and "dialogue_2" in examples:
         # Pairs of sequences
-        return tokenizer(examples["dialogue_1"], examples["dialogue_2"], truncation=True, padding="max_length", max_length=128)
+        return tokenizer(examples["dialogue_1"], examples["dialogue_2"], truncation=True, padding="max_length", max_length=128, return_tensors="pt")
     else:
         raise ValueError("Invalid input format. Please provide 'dialog' or ('dialogue_1', 'dialogue_2') in examples.")
 
@@ -41,7 +40,7 @@ output_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "saved_mo
 os.makedirs(output_dir, exist_ok=True)
 
 training_args = TrainingArguments(
-    output_dir=output_dir,            # specify the output directory
+    output_dir=output_dir,
     num_train_epochs=10,
     per_device_train_batch_size=16,
     per_device_eval_batch_size=64,
@@ -73,7 +72,7 @@ print('Evaluation Results after fine-tuning:', post_eval_results['eval_loss'])
 # Step 8: Explore Predictions
 for idx, (_, post) in enumerate(zip(encoded_dataset['validation'][:10], post_val_predictions.predictions)):
     post_pred = tokenizer.decode(np.argmax(post, axis=-1), skip_special_tokens=True)
-    ground_truth = encoded_dataset['validation'][idx]["dialog"]
+    ground_truth = tokenizer.decode(encoded_dataset['validation'][idx]["dialog"], skip_special_tokens=True)
     
     print('Ground truth \n' + ground_truth + '\n')
     print('Post-prediction \n' + post_pred + '\n')
