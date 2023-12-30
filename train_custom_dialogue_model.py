@@ -3,6 +3,7 @@ import torch
 import requests
 import os
 from IPython.display import HTML
+from google.colab import files
 
 # Load DialoGPT-medium model and tokenizer
 model_name = "microsoft/DialoGPT-medium"
@@ -58,12 +59,8 @@ trainer.train()
 model.save_pretrained("./shopkeepr_model")
 tokenizer.save_pretrained("./shopkeepr_model")
 
-# Display and download all files in the output directory
-output_files = os.listdir("./shopkeepr_model")
-print("Files in the output directory:")
-print(output_files)
+# Create a zip file of the output directory
+!zip -r shopkeepr_model.zip shopkeepr_model
 
-# Provide clickable download links for all files
-for file in output_files:
-    file_path = os.path.join("./shopkeepr_model", file)
-    display(HTML(f"\nDownload {file}: <a href='{file_path}' target='_blank'>link</a>"))
+# Download the zip file
+files.download('shopkeepr_model.zip')
