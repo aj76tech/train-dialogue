@@ -57,14 +57,12 @@ trainer.train()
 model.save_pretrained("./shopkeepr_model")
 tokenizer.save_pretrained("./shopkeepr_model")
 
-# Display and download the saved model
+# Display and download all files in the output directory
 output_files = os.listdir("./shopkeepr_model")
 print("Files in the output directory:")
 print(output_files)
 
-# Download the model file (assuming there is only one .bin file)
-model_file = [file for file in output_files if file.endswith(".bin")][0]
-model_path = os.path.join("./shopkeepr_model", model_file)
-
-# Provide a link for downloading the model file
-print(f"\nDownload the trained model: [link]({model_path})")
+# Provide download links for all files
+for file in output_files:
+    file_path = os.path.join("./shopkeepr_model", file)
+    print(f"\nDownload {file}: [link]({file_path})")
