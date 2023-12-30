@@ -2,6 +2,7 @@ from transformers import GPT2LMHeadModel, GPT2Tokenizer, TextDataset, DataCollat
 import torch
 import requests
 import os
+from IPython.display import HTML
 
 # Load DialoGPT-medium model and tokenizer
 model_name = "microsoft/DialoGPT-medium"
@@ -62,7 +63,7 @@ output_files = os.listdir("./shopkeepr_model")
 print("Files in the output directory:")
 print(output_files)
 
-# Provide download links for all files
+# Provide clickable download links for all files
 for file in output_files:
     file_path = os.path.join("./shopkeepr_model", file)
-    print(f"\nDownload {file}: [link]({file_path})")
+    display(HTML(f"\nDownload {file}: <a href='{file_path}' target='_blank'>link</a>"))
