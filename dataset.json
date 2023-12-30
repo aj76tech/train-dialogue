@@ -1,32 +1,25 @@
 [
     {
-        "Assistant": "Welcome to XYZ Mart! How can I assist you today?"
+        "dialogue": [
+            {"role": "assistant", "content": "Welcome to XYZ Mart! How can I assist you today?"},
+            {"role": "user", "content": "Hi! I'm looking for a new pair of running shoes. Do you have any recommendations?"},
+            {"role": "assistant", "content": "Absolutely! We have a great selection of running shoes. Are you looking for a specific brand or type of shoe?"},
+            {"role": "user", "content": "I prefer Nike, and I need them for trail running. What options do you have?"},
+            {"role": "assistant", "content": "Certainly! We have the latest Nike trail running shoes in various sizes. Would you like a lightweight design or something more cushioned?"}
+        ]
     },
     {
-        "Buyer": "Hi! I'm looking for a new pair of running shoes. Do you have any recommendations?"
+        "dialogue": [
+            {"role": "user", "content": "I'm leaning towards a lightweight design. Do you have them in blue or black?"},
+            {"role": "assistant", "content": "Yes, we have both colors available. Let me check if we have your size in stock. What size are you looking for?"},
+            {"role": "user", "content": "I wear a size 9.5. And while you check, do you also have any running socks on sale?"},
+            {"role": "assistant", "content": "Certainly! We have size 9.5 in both blue and black. And yes, we have a special on running socks – buy one pair, get the second at half price. Interested?"}
+        ]
     },
     {
-        "Assistant": "Absolutely! We have a great selection of running shoes. Are you looking for a specific brand or type of shoe?"
-    },
-    {
-        "Buyer": "I prefer Nike, and I need them for trail running. What options do you have?"
-    },
-    {
-        "Assistant": "Certainly! We have the latest Nike trail running shoes in various sizes. Would you like a lightweight design or something more cushioned?"
-    },
-    {
-        "Buyer": "I'm leaning towards a lightweight design. Do you have them in blue or black?"
-    },
-    {
-        "Assistant": "Yes, we have both colors available. Let me check if we have your size in stock. What size are you looking for?"
-    },
-    {
-        "Buyer": "I wear a size 9.5. And while you check, do you also have any running socks on sale?"
-    },
-    {
-        "Assistant": "Certainly! We have size 9.5 in both blue and black. And yes, we have a special on running socks – buy one pair, get the second at half price. Interested?"
-    },
-    {
-        "Buyer": "Great! I'll take the black shoes in size 9.5 and two pairs of running socks. Do you offer any discounts for frequent customers?"
+        "dialogue": [
+            {"role": "user", "content": "Great! I'll take the black shoes in size 9.5 and two pairs of running socks. Do you offer any discounts for frequent customers?"},
+            {"role": "assistant", "content": "Certainly! Let me apply a 10% discount for your purchase today. Anything else you'd like to add to your order?"}
+        ]
     }
 ]
