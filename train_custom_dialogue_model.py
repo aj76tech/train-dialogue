@@ -9,11 +9,8 @@ tokenizer = GPT2Tokenizer.from_pretrained(model_name)
 model = GPT2LMHeadModel.from_pretrained(model_name)
 
 # Load your custom dataset (replace 'path_to_your_dataset.txt' with your actual dataset path)
-github_username = 'aj76tech'
-github_repo = 'train-dialogue'
-github_file_path = 'training.txt'
 
-github_dataset_url = f'https://raw.githubusercontent.com/{github_username}/{github_repo}/main/{github_file_path}'
+github_dataset_url = f'https://github.com/aj76tech/train-dialogue/blob/main/training.txt'
 dataset = TextDataset(
     tokenizer=tokenizer,
     file_path=github_dataset_url,
