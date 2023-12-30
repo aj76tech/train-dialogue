@@ -1,8 +1,32 @@
 [
-    {"speaker": "user", "dialog": ["Hello, how can I help you?"]},
-    {"speaker": "assistant", "dialog": ["Hi there! I'm here to assist you."]},
-    {"speaker": "user", "dialog": ["I have a question about...", "Can you provide some information?"]},
-    {"speaker": "assistant", "dialog": ["Certainly! Please go ahead and ask your question."]},
-    {"speaker": "user", "dialog": ["How does this model work?", "Tell me about the training process."]},
-    {"speaker": "assistant", "dialog": ["The model is trained using...", "It goes through several epochs and learns from the provided data."]}
+    {
+        "Assistant": "Welcome to XYZ Mart! How can I assist you today?"
+    },
+    {
+        "Buyer": "Hi! I'm looking for a new pair of running shoes. Do you have any recommendations?"
+    },
+    {
+        "Assistant": "Absolutely! We have a great selection of running shoes. Are you looking for a specific brand or type of shoe?"
+    },
+    {
+        "Buyer": "I prefer Nike, and I need them for trail running. What options do you have?"
+    },
+    {
+        "Assistant": "Certainly! We have the latest Nike trail running shoes in various sizes. Would you like a lightweight design or something more cushioned?"
+    },
+    {
+        "Buyer": "I'm leaning towards a lightweight design. Do you have them in blue or black?"
+    },
+    {
+        "Assistant": "Yes, we have both colors available. Let me check if we have your size in stock. What size are you looking for?"
+    },
+    {
+        "Buyer": "I wear a size 9.5. And while you check, do you also have any running socks on sale?"
+    },
+    {
+        "Assistant": "Certainly! We have size 9.5 in both blue and black. And yes, we have a special on running socks – buy one pair, get the second at half price. Interested?"
+    },
+    {
+        "Buyer": "Great! I'll take the black shoes in size 9.5 and two pairs of running socks. Do you offer any discounts for frequent customers?"
+    }
 ]
