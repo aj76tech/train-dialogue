@@ -58,9 +58,3 @@ trainer.train()
 # Save the fine-tuned model
 model.save_pretrained("./shopkeepr_model")
 tokenizer.save_pretrained("./shopkeepr_model")
-
-# Create a zip file of the output directory
-!zip -r shopkeepr_model.zip shopkeepr_model
-
-# Download the zip file
-files.download('shopkeepr_model.zip')
